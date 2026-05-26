@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Restaurante - Reseñas de Clientes</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Reseñas y Opiniones del Restaurante</h1>
+        <p>La voz de nuestros comensales es lo mas valioso</p>
+    </header>
+    <nav>
+        <a href="index.html">Inicio / Login</a>
+        <a href="menu.html">Nuestro menu</a>
+        <a href="resenas.html">Reseñas de Clientes</a>
+    </nav>
+    <div class="container">
+        <h2>Libro de Opiniones Digital (Entidad: Reseñas)</h2>
+        
+        <div id="contenedor-resenas"></div>
+        
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+        
+        <h2>Dejanos tu reseña</h2>
+        <form id="form-add-resena">
+            <label for="comentario">Comentario sobre tu Experiencia:</label>
+            <textarea id="comentario" rows="4" placeholder="Escribe aquí tu opinión..." required></textarea>
+            
+            <label for="estrellas">Calificacion (1 a 5 estrellas):</label>
+            <input type="number" id="estrellas" min="1" max="5" value="5" required>
+            
+            <button type="submit">Publicar Comentario</button>
+        </form>
+        <div id="feedback-api" style="margin-top: 15px;"></div>
+    </div>
+    <footer>
+        <p>&copy; 2026 Sistema de gestion de restaurante S.A.</p>
+    </footer>
+
+    <script>
+        async function cargarResenas() {
+            const container = document.getElementById('contenedor-resenas');
+            container.innerHTML = "<p>Cargando lista de opiniones desde el servidor...</p>";
+            
+            try {
+                const res = await fetch('/api/resenas');
+                const list = await res.json();
+                
+                if(!res.ok) {
+                    container.innerHTML = `<p class="error">Error del servidor (HTTP ${res.status}): ${list.error}</p>`;
+                    return;
+                }
+
+                if(list.length === 0) {
+                    container.innerHTML = "<p>Aún no hay opiniones registradas.</p>";
+                    return;
+                }
+                
+                container.innerHTML = "";
+                list.forEach(r => {
+                    container.innerHTML += `
+                        <div class="card">
+                            <div class="card-header" style="display:flex; justify-content:space-between;">
+                                <span>👤 Usuario: ${r.usuario}</span>
+                                <span style="color:#f1c40f;">${'★'.repeat(r.estrellas)}${'☆'.repeat(5-r.estrellas)}</span>
+                            </div>
+                            <p>${r.comentario}</p>
+                            <button onclick="eliminarResena(${r.id})" style="background-color:#c0392b; margin-top:5px; padding:4px 10px; font-size:12px; border-radius:4px;">Eliminar (DELETE)</button>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                container.innerHTML = "<p class='error'>Error al conectar con la API para listar los recursos.</p>";
+            }
+        }
+
+        document.getElementById('form-add-resena').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const comentario = document.getElementById('comentario').value;
+            const estrellas = document.getElementById('estrellas').value;
+            const feedback = document.getElementById('feedback-api');
+
+            try {
+                const res = await fetch('/api/resenas', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ comentario, estrellas })
+                });
+                const result = await res.json();
+
+                if (res.ok) {
+                    feedback.className = "success";
+                    feedback.innerText = `Éxito (HTTP ${res.status}): ${result.message}`;
+                    document.getElementById('form-add-resena').reset();
+                    cargarResenas();
+                } else {
+                    feedback.className = "error";
+                    feedback.innerText = `Error (HTTP ${res.status}): ${result.error}`;
+                }
+            } catch (err) {
+                feedback.className = "error";
+                feedback.innerText = "Error crítico de comunicación con el backend.";
+            }
+        });
+
+        async function eliminarResena(id) {
+            if(!confirm("¿Estás seguro de eliminar esta reseña?")) return;
+            const feedback = document.getElementById('feedback-api');
+            try {
+                const res = await fetch(`/api/resenas/${id}`, { method: 'DELETE' });
+                const result = await res.json();
+                if(res.ok) {
+                    feedback.className = "success";
+                    feedback.innerText = `Éxito (HTTP ${res.status}): ${result.message}`;
+                    cargarResenas();
+                } else {
+                    feedback.className = "error";
+                    feedback.innerText = `Error (HTTP ${res.status}): ${result.error}`;
+                }
+            } catch (err) {
+                feedback.className = "error";
+                feedback.innerText = "Error al intentar procesar la baja del recurso.";
+            }
+        }
+
+        cargarResenas();
+    </script>
+</body>
+</html>

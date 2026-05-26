@@ -1,0 +1,188 @@
+/* ==========================================================================
+   1. CONFIGURACIÓN GENERAL Y VARIABLES
+   ========================================================================== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   2. ESTRUCTURA Y COMPONENTES VISUALES (HEADER, NAV, FOOTER)
+   ========================================================================== */
+header {
+    background-color: #81a069; /* Verde Oliva Gourmet */
+    color: white;
+    padding: 25px 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    font-weight: 600;
+}
+
+header p {
+    margin: 5px 0 0 0;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+nav {
+    background-color: #2c3e50; /* Azul Oscuro Elegante */
+    padding: 12px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+    font-size: 15px;
+}
+
+nav a:hover {
+    color: #81a069; /* Cambio de color al pasar el mouse */
+}
+
+/* Contenedor Principal Bloque Central */
+.container {
+    max-width: 800px;
+    width: 90%;
+    margin: 30px auto;
+    background: #ffffff;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    flex: 1; /* Empuja el footer hacia abajo si hay poco contenido */
+}
+
+h2 {
+    color: #2c3e50;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+    margin-top: 0;
+}
+
+/* ==========================================================================
+   3. TARJETAS (CARDS) - MOSTRAR ELEMENTOS Y ENTIDADES
+   ========================================================================== */
+.card {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 18px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.card-header {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 1.1rem;
+    border-bottom: 1px solid #edf2f7;
+    padding-bottom: 8px;    
+    margin-bottom: 12px;
+}
+
+/* formularios y elementos de entrada */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 15px;
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 14px;
+}
+
+input, textarea, select {
+    padding: 12px;
+    margin-top: 6px;
+    border: 1px solid #cbd5e0;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    transition: border-color 0.2s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: #81a069;
+    box-shadow: 0 0 0 3px rgba(129, 160, 105, 0.2);
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* botones con transiciones */
+button {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #81a069;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+    background-color: #6d8a56;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* respuesta de la api  */
+.error {
+    color: #a52a2a;
+    background-color: #fff5f5;
+    border: 1px solid #fed7d7;
+    padding: 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.success {
+    color: #2f855a;
+    background-color: #f0fff4;
+    border: 1px solid #c6f6d5;
+    padding: 12px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* pie de la pagina  */
+footer {
+    background-color: #81a069;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+}
